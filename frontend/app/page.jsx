@@ -110,6 +110,7 @@ export default function Dashboard() {
     const controller = new AbortController();
     const query = new URLSearchParams({ from, to });
     setLoading(true);
+    setPayload(null);
     fetch(`/api/countries/${encodeURIComponent(countryCode)}?${query}`, { signal: controller.signal })
       .then(async (response) => {
         const result = await response.json();
@@ -172,7 +173,7 @@ export default function Dashboard() {
         filter: (item) => item.raw != null,
         callbacks: {
           title: (items) => items.length ? longDate(items[0].label) : "",
-          label: (context) => `${number.format(Math.round(context.raw))} ${metricOptions[metric].unit} a day, on average`,
+          label: (context) => `${decimal.format(context.raw)} ${metricOptions[metric].unit} a day, on average`,
           afterLabel: (context) => {
             const detail = context.dataset.meta[context.dataIndex];
             return detail ? `Reports ${shortDate(detail.from)} to ${shortDate(detail.to)}, ${number.format(detail.total)} in ${detail.span} days` : "";
@@ -240,21 +241,55 @@ export default function Dashboard() {
           <div className="charts">
             <section className="chart-block">
               <div className="chart-head"><h2>Cumulative totals</h2><label className="check"><input type="checkbox" checked={log} onChange={(event) => setLog(event.target.checked)} /> Log scale</label></div>
-              <div className="canvas-wrap"><Line data={trendData} options={trendOptions} plugins={[whoMarker]} /></div>
+              <div className="canvas-wrap"><Line data={trendData} options={trendOptions} plugins={[whoMarker]} aria-label={`Cumulative confirmed cases, deaths, and recoveries for ${activeCountry?.name || "selected country"}`} /></div>
               <p className="note">Dots mark dates with a report. Lines join reports across days without one. The dashed line marks the WHO pandemic declaration on 11 March 2020.</p>
+              <details className="chart-data">
+                <summary>View cumulative chart data as a table</summary>
+                <div className="table-scroll">
+                  <table>
+                    <caption>Cumulative cases, deaths, and recoveries for {activeCountry?.name || "the selected country"}</caption>
+                    <thead><tr><th scope="col">Date</th><th scope="col">Confirmed</th><th scope="col">Deaths</th><th scope="col">Recovered</th></tr></thead>
+                    <tbody>{(payload?.timeline || []).map((date, index) => <tr key={date}>
+                      <th scope="row">{longDate(date)}</th>
+                      {(["confirmed", "deaths", "recovered"]).map((key) => {
+                        const value = payload.trend[key][index];
+                        return <td key={key}>{value == null ? "No report" : number.format(value)}</td>;
+                      })}
+                    </tr>)}</tbody>
+                  </table>
+                </div>
+              </details>
             </section>
             <section className="chart-block">
               <div className="chart-head"><h2>{metricOptions[metric].title}</h2><div className="seg" role="group" aria-label="Choose what the bars show">
                 {Object.keys(metricOptions).map((key) => <button type="button" key={key} aria-pressed={metric === key} onClick={() => setMetric(key)}>{key === "confirmed" ? "Cases" : key === "deaths" ? "Deaths" : "Recoveries"}</button>)}
               </div></div>
-              <div className="canvas-wrap"><Bar data={dailyData} options={dailyOptions} plugins={[whoMarker]} /></div>
+              <div className="canvas-wrap"><Bar data={dailyData} options={dailyOptions} plugins={[whoMarker]} aria-label={`Estimated ${metricOptions[metric].unit} per day for ${activeCountry?.name || "selected country"}`} /></div>
               <p className="note">Each bar shows the average per day between two reports. The first report has no bar because there is no earlier report to compare with.</p>
+              <details className="chart-data">
+                <summary>View estimated daily changes as a table</summary>
+                <div className="table-scroll">
+                  <table>
+                    <caption>{metricOptions[metric].title} for {activeCountry?.name || "the selected country"} (estimated averages)</caption>
+                    <thead><tr><th scope="col">Date</th><th scope="col">Average per day</th><th scope="col">Report interval</th><th scope="col">Total change</th></tr></thead>
+                    <tbody>{(payload?.timeline || []).map((date, index) => {
+                      const estimate = dailyEstimates[index];
+                      return <tr key={date}>
+                        <th scope="row">{longDate(date)}</th>
+                        <td>{estimate ? decimal.format(estimate.value) : "No estimate"}</td>
+                        <td>{estimate ? `${shortDate(estimate.from)} to ${shortDate(estimate.to)}` : "—"}</td>
+                        <td>{estimate ? number.format(estimate.total) : "—"}</td>
+                      </tr>;
+                    })}</tbody>
+                  </table>
+                </div>
+              </details>
             </section>
           </div>
           <aside className="insights"><h2>What the data shows</h2><ul>
             {payload?.reports.length ? <>
               <li>{payload.reports.length} reports for {payload.country.name} fall within the selected period.</li>
-              {peak && <li>Fastest estimated growth was {number.format(Math.round(peak.value))} new cases a day, from {shortDate(peak.from)} to {shortDate(peak.to)}.</li>}
+              {peak && <li>Fastest estimated growth was {decimal.format(peak.value)} new cases a day, from {shortDate(peak.from)} to {shortDate(peak.to)}.</li>}
               {latest && payload.metrics?.active != null && <li>At the latest report, {number.format(payload.metrics.active)} cases were active (confirmed minus deaths and recoveries).</li>}
             </> : !loading && <li>No reports fall in this range, so there is nothing to compare.</li>}
           </ul></aside>
