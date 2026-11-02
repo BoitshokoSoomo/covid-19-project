@@ -1,0 +1,6 @@
+* { box-sizing: border-box; }
+body { margin: 0; color: #17232d; background: #f4f6f7; font-family: Arial, sans-serif; }
+.setup-page { max-width: 760px; margin: 48px auto; padding: 24px; background: #fff; border: 1px solid #dce2e6; border-radius: 8px; }
+.setup-page h1 { margin-top: 0; }
+.setup-page label { display: block; margin: 24px 0 6px; font-weight: 600; }
+.setup-page select { width: min(100%, 360px); padding: 10px; font: inherit; }
