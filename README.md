@@ -1,6 +1,8 @@
 # COVID-19 Early Outbreak Dashboard
 
-This branch includes milestones 1 and 2: project setup, API data loading, a country selector populated from the supplied JSON dataset, and a cumulative line chart for confirmed cases, deaths, and recoveries.
+This branch includes milestones 1 to 3: project setup and country selection, cumulative trends, metric cards, estimated daily changes, and a date range filter.
+
+Daily values are averages between consecutive cumulative reports because the source dataset is sparse. See the final milestone documentation for the detailed calculation and data limitations.
 
 ## Run locally
 
