@@ -64,7 +64,7 @@ app.get("/api/countries/:code", (req, res) => {
     ])),
     daily,
     peakDailyCases: Calc.peakEstimate(daily.confirmed),
-    reportGaps: Calc.gapRange(country.records)
+    reportGaps: Calc.gapRange(reports)
   });
 });
 

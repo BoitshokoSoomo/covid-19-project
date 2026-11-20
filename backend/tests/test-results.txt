@@ -1,0 +1,18 @@
+PASS  data file has the five required countries
+PASS  date maths counts the leap day (20 Feb to 1 Mar 2020 is 10 days)
+PASS  invalid dates are rejected
+PASS  cleanRecords sorts, removes duplicates and skips bad rows
+PASS  active cases = confirmed - deaths - recovered (latest report per country)
+PASS  South Africa shows its first case on 5 March 2020
+PASS  days without a report align to null on the timeline
+PASS  China daily new cases, 10 to 20 Feb = (75569 - 42638) / 10 = 3293.1
+PASS  first report of each country has no bar
+PASS  no bars before the first report
+PASS  daily values add back up to the cumulative change (every country, every metric)
+PASS  China peak daily growth is in February, 10 to 20 Feb
+PASS  Italy grows faster in each ten-day block of March
+PASS  South Africa daily new cases, 20 to 27 Mar = (1000 - 202) / 7
+PASS  gap range reports the days between reports
+PASS  percent of confirmed handles zero and missing values
+
+16 tests passed

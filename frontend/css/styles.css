@@ -147,6 +147,15 @@ button:hover { border-color: var(--ink); }
 h2 { margin: 0; font-size: 1.05rem; font-weight: 650; }
 .canvas-wrap { position: relative; height: 320px; }
 .note { margin: 8px 0 0; color: var(--muted); font-size: 0.88rem; max-width: 70ch; }
+.chart-data { margin-top: 10px; font-size: 0.88rem; }
+.chart-data summary { color: var(--confirmed); cursor: pointer; width: fit-content; }
+.chart-data summary:hover { text-decoration: underline; }
+.table-scroll { max-height: 320px; overflow: auto; margin-top: 8px; background: #fff; border: 1px solid var(--rule); }
+.chart-data table { width: 100%; border-collapse: collapse; text-align: left; font-variant-numeric: tabular-nums; }
+.chart-data caption { padding: 8px; text-align: left; font-weight: 650; }
+.chart-data th, .chart-data td { padding: 6px 8px; border-top: 1px solid var(--rule); white-space: nowrap; }
+.chart-data thead th { position: sticky; top: 0; background: var(--paper); }
+
 .check { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 0.9rem; cursor: pointer; }
 
 .seg { display: flex; }
