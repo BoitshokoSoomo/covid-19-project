@@ -1,6 +1,6 @@
 # COVID-19 Early Outbreak Dashboard
 
-This branch covers milestone 1: project setup, API data loading, and a country selector populated from the supplied JSON dataset.
+This branch includes milestones 1 and 2: project setup, API data loading, a country selector populated from the supplied JSON dataset, and a cumulative line chart for confirmed cases, deaths, and recoveries.
 
 ## Run locally
 

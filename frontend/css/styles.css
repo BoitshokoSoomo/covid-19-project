@@ -4,3 +4,7 @@ body { margin: 0; color: #17232d; background: #f4f6f7; font-family: Arial, sans-
 .setup-page h1 { margin-top: 0; }
 .setup-page label { display: block; margin: 24px 0 6px; font-weight: 600; }
 .setup-page select { width: min(100%, 360px); padding: 10px; font: inherit; }
+.trend-section { margin-top: 32px; }
+.trend-section h2 { font-size: 1.1rem; }
+.chart-wrap { position: relative; height: 320px; margin-top: 12px; }
+.chart-note { color: #5b6770; font-size: 0.9rem; line-height: 1.5; }
